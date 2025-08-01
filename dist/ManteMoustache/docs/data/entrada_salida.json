@@ -1,0 +1,121 @@
+[
+  {
+    "nombre": "Pablorivero",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:37:55",
+    "hora_salida": "13:37:59",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:38:13",
+    "hora_salida": "13:38:16",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:38:26",
+    "hora_salida": "13:40:00",
+    "total_horas": 0.03
+  },
+  {
+    "nombre": "andres",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:38:05",
+    "hora_salida": "13:38:07",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "andres",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:38:20",
+    "hora_salida": "13:38:23",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "andres",
+    "fecha": "31/07/2025",
+    "hora_entrada": "13:38:30",
+    "hora_salida": "13:59:00",
+    "total_horas": 0.34
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "2025-07-31",
+    "hora_entrada": "15:35:09",
+    "hora_salida": "15:35:13",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "2025-07-31",
+    "hora_entrada": "15:35:43",
+    "hora_salida": "15:35:49",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "2025-07-31",
+    "hora_entrada": "15:36:07",
+    "hora_salida": "15:36:35",
+    "total_horas": 0.01
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "31/07/2025",
+    "hora_entrada": "15:44:26",
+    "hora_salida": "15:44:33",
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "andres",
+    "fecha": "31/07/2025",
+    "hora_entrada": "15:44:39",
+    "hora_salida": "15:45:00",
+    "total_horas": 0.01
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "09:28:50",
+    "hora_salida": "09:53:44",
+    "total_horas": 0.42
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "09:56:22",
+    "hora_salida": "10:33:16",
+    "total_horas": 0.62
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "10:45:30",
+    "hora_salida": "11:00:00",
+    "total_horas": 0.24
+  },
+  {
+    "nombre": "andres",
+    "fecha": "01/08/2025",
+    "hora_entrada": "10:45:35",
+    "hora_salida": null,
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "15:57:05",
+    "hora_salida": "15:59:09",
+    "total_horas": 0.03
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "16:58:36",
+    "hora_salida": null,
+    "total_horas": 0.0
+  }
+]
