@@ -4,18 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión Mantenimiento</title>
+    <title>TORNERIA DEVOTTO</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 2rem;
         }
 
         h1 {
             color: #2c3e50;
+            margin-top: 0;
         }
 
-        /* Pestañas ----------------------------------------------------*/
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
         .tabs {
             display: flex;
             cursor: pointer;
@@ -43,11 +50,11 @@
             display: block;
         }
 
-        /* Tablas ------------------------------------------------------*/
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
+            font-size: .9rem;
         }
 
         th,
@@ -55,14 +62,12 @@
             border: 1px solid #ccc;
             padding: .4rem;
             text-align: left;
-            font-size: .9rem;
         }
 
         thead {
             background: #f0f0f0;
         }
 
-        /* Filtros -----------------------------------------------------*/
         .filtros {
             display: flex;
             flex-wrap: wrap;
@@ -75,11 +80,28 @@
         .filtros select {
             padding: .3rem .4rem;
         }
+
+        #last-update {
+            font-size: .85rem;
+            color: #555;
+        }
+
+        button#btnRefresh {
+            padding: .4rem 1rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Gestión Mantenimiento</h1>
+
+    <div class="topbar">
+        <h1>TORNERIA DEVOTTO</h1>
+        <div>
+            <button id="btnRefresh">🔄 Actualizar ahora</button>
+            <span id="last-update"></span>
+        </div>
+    </div>
 
     <!-- PESTAÑAS -->
     <div class="tabs">
@@ -90,12 +112,9 @@
     <!-- PANEL 1 · ENTRADA Y SALIDA -->
     <div id="panel-entrada" class="panel active">
         <div class="filtros">
-            Responsable:
-            <input id="fResp" type="text" placeholder="Nombre">
-            Desde:
-            <input id="fDesde" type="date">
-            Hasta:
-            <input id="fHasta" type="date">
+            Responsable: <input id="fResp" type="text" placeholder="Nombre">
+            Desde: <input id="fDesde" type="date">
+            Hasta: <input id="fHasta" type="date">
         </div>
 
         <table>
@@ -132,7 +151,7 @@
             </select>
             <input data-key="responsable" placeholder="Responsable">
             <input data-key="observaciones" placeholder="Observaciones">
-            <input data-key="fecha_ingreso" type="date" title="Filtrar por fecha ingreso">
+            <input data-key="fecha_ingreso" type="date" title="Filtrar desde fecha ingreso">
         </div>
 
         <table>
@@ -164,21 +183,35 @@
             });
         });
 
-        /*--------- fetch helper ---------*/
+        /*--------- utilidades ---------*/
+        function toISO(dmy) {           // "31/07/2025" -> "2025-07-31"
+            if (!dmy || !dmy.includes('/')) return dmy;
+            const [d, m, y] = dmy.split('/');
+            return `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+        }
+        function fmtDateTime(d = new Date()) {
+            return d.toLocaleString('es-ES', { hour12: false });
+        }
+        function setLastUpdate() { document.getElementById('last-update').textContent = 'Última actualización: ' + fmtDateTime(); }
+
+        /*--------- fetch helper (sin caché) ---------*/
         function cargarYGuardar(url, setter) {
-            return fetch(url).then(r => r.json()).then(setter).catch(err => console.error(url, err));
+            const nocache = url + '?t=' + Date.now();
+            return fetch(nocache, { cache: 'no-store' })
+                .then(r => r.json()).then(setter)
+                .catch(err => console.error(url, err));
         }
 
         /*================ 1 · ENTRADA Y SALIDA =================*/
-        let dataEntrada = [];                       // caché
+        let dataEntrada = [];
         const entradaTbody = document.getElementById('entrada-container');
 
-        function renderEntrada(lista) {
+        function renderEntrada(list) {
             entradaTbody.innerHTML = '';
-            lista.forEach(item => {
+            list.forEach(it => {
                 const tr = document.createElement('tr');
                 ['nombre', 'fecha', 'hora_entrada', 'hora_salida', 'total_horas'].forEach(k => {
-                    const td = document.createElement('td'); td.textContent = item[k] ?? ''; tr.appendChild(td);
+                    const td = document.createElement('td'); td.textContent = it[k] ?? ''; tr.appendChild(td);
                 });
                 entradaTbody.appendChild(tr);
             });
@@ -189,15 +222,14 @@
             const dDesde = document.getElementById('fDesde').value;
             const dHasta = document.getElementById('fHasta').value;
             const filtrado = dataEntrada.filter(it => {
+                const iso = toISO(it.fecha);
                 const okResp = resp === '' || (it.nombre ?? '').toLowerCase().includes(resp);
-                const okDesde = !dDesde || it.fecha >= dDesde;
-                const okHasta = !dHasta || it.fecha <= dHasta;
+                const okDesde = !dDesde || iso >= dDesde;
+                const okHasta = !dHasta || iso <= dHasta;
                 return okResp && okDesde && okHasta;
             });
             renderEntrada(filtrado);
         }
-
-        /* listeners Entrada */
         ['fResp', 'fDesde', 'fHasta'].forEach(id => {
             document.getElementById(id).addEventListener('input', aplicarFiltrosEntrada);
             document.getElementById(id).addEventListener('change', aplicarFiltrosEntrada);
@@ -207,9 +239,9 @@
         let dataOrdenes = [];
         const ordenesTbody = document.getElementById('ordenes-container');
 
-        function renderOrdenes(lista) {
+        function renderOrdenes(list) {
             ordenesTbody.innerHTML = '';
-            lista.forEach(it => {
+            list.forEach(it => {
                 const tr = document.createElement('tr');
                 ['nro_ot', 'cliente', 'trabajo', 'estado', 'prioridad', 'responsable', 'observaciones', 'fecha_ingreso']
                     .forEach(k => {
@@ -220,41 +252,37 @@
         }
 
         function aplicarFiltrosOrdenes() {
-            // lee todos los campos dentro de #ordenes-filtros
             const filtros = {};
             document.querySelectorAll('#ordenes-filtros [data-key]').forEach(el => {
                 filtros[el.dataset.key] = el.value.trim().toLowerCase();
             });
-
             const filtrado = dataOrdenes.filter(it => {
                 return Object.entries(filtros).every(([k, val]) => {
-                    if (!val) return true;                         // sin filtro
-                    if (k === 'fecha_ingreso') return it[k] >= val;    // filtrar desde esa fecha (>=)
+                    if (!val) return true;
+                    if (k === 'fecha_ingreso') return it[k] >= val;    // desde fecha
                     return (it[k] ?? '').toString().toLowerCase().includes(val);
                 });
             });
             renderOrdenes(filtrado);
         }
-
-        /* listeners Ordenes */
         document.querySelectorAll('#ordenes-filtros input,#ordenes-filtros select')
             .forEach(el => el.addEventListener('input', aplicarFiltrosOrdenes));
 
-        /*================ 3 · CARGA INICIAL + REFRESCO 1 MIN =================*/
+        /*================ 3 · CARGA Y REFRESCO =================*/
         function cargarTodo() {
             Promise.all([
                 cargarYGuardar('data/entrada_salida.json', d => { dataEntrada = d; aplicarFiltrosEntrada(); }),
                 cargarYGuardar('data/ordenes_trabajo.json', d => { dataOrdenes = d; aplicarFiltrosOrdenes(); })
-            ]);
+            ]).then(setLastUpdate);
         }
+        const hoyISO = new Date().toISOString().split('T')[0];
+        document.getElementById('fDesde').value = hoyISO;
+        document.getElementById('fHasta').value = hoyISO;
 
-        // establece fecha de hoy por defecto en filtros
-        const hoy = new Date().toISOString().split('T')[0];
-        document.getElementById('fDesde').value = hoy;
-        document.getElementById('fHasta').value = hoy;
+        document.getElementById('btnRefresh').addEventListener('click', cargarTodo);
 
-        cargarTodo();                     // primera carga
-        setInterval(cargarTodo, 60 * 1000);  // refresco cada 1 min
+        cargarTodo();                     // inicial
+        setInterval(cargarTodo, 60 * 1000); // cada minuto
     </script>
 </body>
 
