@@ -80,6 +80,13 @@
     "nombre": "Pablorivero",
     "fecha": "01/08/2025",
     "hora_entrada": "09:28:50",
+    "hora_salida": "09:53:44",
+    "total_horas": 0.42
+  },
+  {
+    "nombre": "Pablorivero",
+    "fecha": "01/08/2025",
+    "hora_entrada": "09:56:22",
     "hora_salida": null,
     "total_horas": 0.0
   }
