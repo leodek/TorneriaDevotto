@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Archivo actual",
+            "type": "python", // <— cambió aquí
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}", // para asegurarte de que el working dir sea la raíz
+            "justMyCode": true // opcional: depurar solo tu código
+        }
+    ]
+}

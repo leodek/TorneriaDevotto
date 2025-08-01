@@ -15,6 +15,7 @@
             color: #2c3e50;
         }
 
+        /* Pestañas ----------------------------------------------------*/
         .tabs {
             display: flex;
             cursor: pointer;
@@ -22,7 +23,7 @@
         }
 
         .tab {
-            padding: 0.5rem 1rem;
+            padding: .5rem 1rem;
             border: 1px solid #ccc;
             border-bottom: none;
         }
@@ -42,6 +43,7 @@
             display: block;
         }
 
+        /* Tablas ------------------------------------------------------*/
         table {
             width: 100%;
             border-collapse: collapse;
@@ -51,12 +53,27 @@
         th,
         td {
             border: 1px solid #ccc;
-            padding: 0.5rem;
+            padding: .4rem;
             text-align: left;
+            font-size: .9rem;
         }
 
         thead {
             background: #f0f0f0;
+        }
+
+        /* Filtros -----------------------------------------------------*/
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .8rem;
+            align-items: center;
+            font-size: .9rem;
+        }
+
+        .filtros input,
+        .filtros select {
+            padding: .3rem .4rem;
         }
     </style>
 </head>
@@ -64,12 +81,23 @@
 <body>
     <h1>Gestión Mantenimiento</h1>
 
+    <!-- PESTAÑAS -->
     <div class="tabs">
         <div class="tab active" data-target="panel-entrada">Entrada y Salida</div>
         <div class="tab" data-target="panel-ordenes">Órdenes de Trabajo</div>
     </div>
 
+    <!-- PANEL 1 · ENTRADA Y SALIDA -->
     <div id="panel-entrada" class="panel active">
+        <div class="filtros">
+            Responsable:
+            <input id="fResp" type="text" placeholder="Nombre">
+            Desde:
+            <input id="fDesde" type="date">
+            Hasta:
+            <input id="fHasta" type="date">
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -84,7 +112,29 @@
         </table>
     </div>
 
+    <!-- PANEL 2 · ÓRDENES DE TRABAJO -->
     <div id="panel-ordenes" class="panel">
+        <div class="filtros" id="ordenes-filtros">
+            <input data-key="nro_ot" placeholder="OT">
+            <input data-key="cliente" placeholder="Cliente">
+            <input data-key="trabajo" placeholder="Trabajo">
+            <select data-key="estado">
+                <option value="">Estado</option>
+                <option>Programada</option>
+                <option>En proceso</option>
+                <option>Procesada</option>
+            </select>
+            <select data-key="prioridad">
+                <option value="">Prioridad</option>
+                <option>Alta</option>
+                <option>Media</option>
+                <option>Baja</option>
+            </select>
+            <input data-key="responsable" placeholder="Responsable">
+            <input data-key="observaciones" placeholder="Observaciones">
+            <input data-key="fecha_ingreso" type="date" title="Filtrar por fecha ingreso">
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -102,8 +152,9 @@
         </table>
     </div>
 
+    <!-- =========================  S C R I P T  ========================= -->
     <script>
-        // Manejo de pestañas
+        /*--------- pestañas ---------*/
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -113,49 +164,97 @@
             });
         });
 
-        function cargarYMostrar(url, renderFunc) {
-            fetch(url)
-                .then(r => r.json())
-                .then(data => renderFunc(data))
-                .catch(err => console.error(`Error cargando ${url}:`, err));
+        /*--------- fetch helper ---------*/
+        function cargarYGuardar(url, setter) {
+            return fetch(url).then(r => r.json()).then(setter).catch(err => console.error(url, err));
         }
 
-        function renderEntrada(datos) {
-            const tbody = document.getElementById('entrada-container');
-            tbody.innerHTML = '';
-            datos.forEach(item => {
+        /*================ 1 · ENTRADA Y SALIDA =================*/
+        let dataEntrada = [];                       // caché
+        const entradaTbody = document.getElementById('entrada-container');
+
+        function renderEntrada(lista) {
+            entradaTbody.innerHTML = '';
+            lista.forEach(item => {
                 const tr = document.createElement('tr');
-                ['nombre', 'fecha', 'hora_entrada', 'hora_salida', 'total_horas'].forEach(key => {
-                    const td = document.createElement('td');
-                    td.textContent = item[key];
-                    tr.appendChild(td);
+                ['nombre', 'fecha', 'hora_entrada', 'hora_salida', 'total_horas'].forEach(k => {
+                    const td = document.createElement('td'); td.textContent = item[k] ?? ''; tr.appendChild(td);
                 });
-                tbody.appendChild(tr);
+                entradaTbody.appendChild(tr);
             });
         }
 
-        function renderOrdenes(datos) {
-            const tbody = document.getElementById('ordenes-container');
-            tbody.innerHTML = '';
-            datos.forEach(item => {
+        function aplicarFiltrosEntrada() {
+            const resp = document.getElementById('fResp').value.toLowerCase();
+            const dDesde = document.getElementById('fDesde').value;
+            const dHasta = document.getElementById('fHasta').value;
+            const filtrado = dataEntrada.filter(it => {
+                const okResp = resp === '' || (it.nombre ?? '').toLowerCase().includes(resp);
+                const okDesde = !dDesde || it.fecha >= dDesde;
+                const okHasta = !dHasta || it.fecha <= dHasta;
+                return okResp && okDesde && okHasta;
+            });
+            renderEntrada(filtrado);
+        }
+
+        /* listeners Entrada */
+        ['fResp', 'fDesde', 'fHasta'].forEach(id => {
+            document.getElementById(id).addEventListener('input', aplicarFiltrosEntrada);
+            document.getElementById(id).addEventListener('change', aplicarFiltrosEntrada);
+        });
+
+        /*================ 2 · ÓRDENES DE TRABAJO =================*/
+        let dataOrdenes = [];
+        const ordenesTbody = document.getElementById('ordenes-container');
+
+        function renderOrdenes(lista) {
+            ordenesTbody.innerHTML = '';
+            lista.forEach(it => {
                 const tr = document.createElement('tr');
                 ['nro_ot', 'cliente', 'trabajo', 'estado', 'prioridad', 'responsable', 'observaciones', 'fecha_ingreso']
-                    .forEach(key => {
-                        const td = document.createElement('td');
-                        td.textContent = item[key];
-                        tr.appendChild(td);
+                    .forEach(k => {
+                        const td = document.createElement('td'); td.textContent = it[k] ?? ''; tr.appendChild(td);
                     });
-                tbody.appendChild(tr);
+                ordenesTbody.appendChild(tr);
             });
         }
 
-        // Carga inicial y refresco cada 5 min
-        cargarYMostrar('data/entrada_salida.json', renderEntrada);
-        cargarYMostrar('data/ordenes_trabajo.json', renderOrdenes);
-        setInterval(() => {
-            cargarYMostrar('data/entrada_salida.json', renderEntrada);
-            cargarYMostrar('data/ordenes_trabajo.json', renderOrdenes);
-        }, 5 * 60 * 1000);
+        function aplicarFiltrosOrdenes() {
+            // lee todos los campos dentro de #ordenes-filtros
+            const filtros = {};
+            document.querySelectorAll('#ordenes-filtros [data-key]').forEach(el => {
+                filtros[el.dataset.key] = el.value.trim().toLowerCase();
+            });
+
+            const filtrado = dataOrdenes.filter(it => {
+                return Object.entries(filtros).every(([k, val]) => {
+                    if (!val) return true;                         // sin filtro
+                    if (k === 'fecha_ingreso') return it[k] >= val;    // filtrar desde esa fecha (>=)
+                    return (it[k] ?? '').toString().toLowerCase().includes(val);
+                });
+            });
+            renderOrdenes(filtrado);
+        }
+
+        /* listeners Ordenes */
+        document.querySelectorAll('#ordenes-filtros input,#ordenes-filtros select')
+            .forEach(el => el.addEventListener('input', aplicarFiltrosOrdenes));
+
+        /*================ 3 · CARGA INICIAL + REFRESCO 1 MIN =================*/
+        function cargarTodo() {
+            Promise.all([
+                cargarYGuardar('data/entrada_salida.json', d => { dataEntrada = d; aplicarFiltrosEntrada(); }),
+                cargarYGuardar('data/ordenes_trabajo.json', d => { dataOrdenes = d; aplicarFiltrosOrdenes(); })
+            ]);
+        }
+
+        // establece fecha de hoy por defecto en filtros
+        const hoy = new Date().toISOString().split('T')[0];
+        document.getElementById('fDesde').value = hoy;
+        document.getElementById('fHasta').value = hoy;
+
+        cargarTodo();                     // primera carga
+        setInterval(cargarTodo, 60 * 1000);  // refresco cada 1 min
     </script>
 </body>
 
