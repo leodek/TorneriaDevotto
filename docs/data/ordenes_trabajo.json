@@ -47,7 +47,7 @@
     "cliente": "Paylana",
     "trabajo": "ss",
     "fecha_ingreso": "31/07/2025",
-    "insumos": null,
+    "insumos": "",
     "responsable": "Nicola Devotto",
     "observaciones": "s",
     "estado": "Ingresada",
@@ -57,9 +57,9 @@
     "tiempo_pausado": null,
     "fecha_pausada": null,
     "tiempo_trabajo": null,
-    "fecha_iniciado": null,
+    "fecha_iniciado": "05/08/2025 17:48:32",
     "fecha_final": null,
-    "imagenes": "fotos_ordenes\\20250731190852_WhatsApp Image 2025-07-31 at 2.58.35 PM.jpeg",
+    "imagenes": "",
     "fotos": null
   },
   {
@@ -134,7 +134,7 @@
     "insumos": "",
     "responsable": "Nicola Devotto",
     "observaciones": "",
-    "estado": "En proceso",
+    "estado": "Ingresada",
     "prioridad": "Alta",
     "herramientas": null,
     "fecha_estimada": "2025-08-06",
@@ -194,7 +194,7 @@
     "cliente": "Cocchi carointeria",
     "trabajo": "40) Soportes p tirante",
     "fecha_ingreso": "02/08/2025",
-    "insumos": null,
+    "insumos": "",
     "responsable": "Nicola Devotto",
     "observaciones": "4mm 80 el pal",
     "estado": "Ingresada",
@@ -206,7 +206,7 @@
     "tiempo_trabajo": null,
     "fecha_iniciado": null,
     "fecha_final": null,
-    "imagenes": "fotos_ordenes\\20250802083403_WhatsApp Image 2025-08-02 at 8.33.26 AM.jpeg,fotos_ordenes\\20250802083403_WhatsApp Image 2025-08-02 at 8.33.20 AM.jpeg",
+    "imagenes": "fotos_ordenes\\20250802083403_WhatsApp Image 2025-08-02 at 8.33.26 AM.jpeg,fotos_ordenes\\20250802083403_WhatsApp Image 2025-08-02 at 8.33.20 AM.jpeg,C:/Users/Devotto/Downloads/WhatsApp Video 2025-08-05 at 5.34.56 PM.mp4,C:/Users/Devotto/Downloads/WhatsApp Video 2025-08-05 at 5.34.56 PM.mp4,C:/Users/Devotto/Downloads/WhatsApp Image 2025-07-22 at 9.35.33 AM (1).jpeg",
     "fotos": null
   }
 ]
