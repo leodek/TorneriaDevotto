@@ -82,5 +82,26 @@
     "fecha_final": null,
     "imagenes": "",
     "fotos": null
+  },
+  {
+    "id": 5,
+    "nro_ot": "OT005",
+    "cliente": "Pablo123",
+    "trabajo": "asdsadas",
+    "fecha_ingreso": "05/08/2025",
+    "insumos": null,
+    "responsable": "Pablorivero",
+    "observaciones": "sadasdssaddsa",
+    "estado": "Ingresada",
+    "prioridad": "Media",
+    "herramientas": null,
+    "fecha_estimada": "",
+    "tiempo_pausado": null,
+    "fecha_pausada": null,
+    "tiempo_trabajo": null,
+    "fecha_iniciado": null,
+    "fecha_final": null,
+    "imagenes": "",
+    "fotos": null
   }
 ]
