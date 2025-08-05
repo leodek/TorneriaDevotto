@@ -1,9 +1,72 @@
 [
   {
-    "nombre": "Pablo",
-    "fecha": "05/08/2025",
-    "hora_entrada": "16:40:45",
-    "hora_salida": "16:40:47",
+    "nombre": "Nicola Devotto",
+    "fecha": "31/07/2025",
+    "hora_entrada": "09:40:00",
+    "hora_salida": "19:40:00",
+    "total_horas": 10.0
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "01/08/2025",
+    "hora_entrada": "07:59:05",
+    "hora_salida": "08:01:45",
+    "total_horas": 0.04
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "01/08/2025",
+    "hora_entrada": "08:01:54",
+    "hora_salida": "14:51:32",
+    "total_horas": 6.83
+  },
+  {
+    "nombre": "Juan Reyes",
+    "fecha": "01/08/2025",
+    "hora_entrada": "14:33:05",
+    "hora_salida": null,
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "01/08/2025",
+    "hora_entrada": "14:51:35",
+    "hora_salida": "19:05:36",
+    "total_horas": 4.23
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "02/08/2025",
+    "hora_entrada": "11:52:51",
+    "hora_salida": "11:54:05",
+    "total_horas": 0.02
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "02/08/2025",
+    "hora_entrada": "11:54:07",
+    "hora_salida": "06:55:03",
+    "total_horas": -4.98
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "02/08/2025",
+    "hora_entrada": "06:55:06",
+    "hora_salida": "18:31:49",
+    "total_horas": 11.61
+  },
+  {
+    "nombre": "Nicola Devotto",
+    "fecha": "04/08/2025",
+    "hora_entrada": "07:59:33",
+    "hora_salida": null,
+    "total_horas": 0.0
+  },
+  {
+    "nombre": "Tomas Reyes",
+    "fecha": "04/08/2025",
+    "hora_entrada": "08:01:30",
+    "hora_salida": null,
     "total_horas": 0.0
   }
 ]
